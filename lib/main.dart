@@ -7,115 +7,401 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const ink = Color(0xFF17212B);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'وصلة',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF00A884),
+          surface: const Color(0xFFF7F9F8),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF7F9F8),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFF7F9F8),
+          foregroundColor: ink,
+          elevation: 0,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const ChatsPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class ChatPreview {
+  ChatPreview({
+    required this.name,
+    required this.preview,
+    required this.time,
+    required this.initials,
+    this.unread = 0,
+    this.isOnline = false,
+  });
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  final String name;
+  String preview;
+  final String time;
+  final String initials;
+  final int unread;
+  final bool isOnline;
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class ChatsPage extends StatefulWidget {
+  const ChatsPage({super.key});
 
-  void _incrementCounter() {
+  @override
+  State<ChatsPage> createState() => _ChatsPageState();
+}
+
+class _ChatsPageState extends State<ChatsPage> {
+  final _searchController = TextEditingController();
+  final _chats = [
+    ChatPreview(
+      name: 'سارة أحمد',
+      preview: 'تمام، نلتقي بعد قليل',
+      time: '10:42 ص',
+      initials: 'س',
+      unread: 2,
+      isOnline: true,
+    ),
+    ChatPreview(
+      name: 'فريق المشروع',
+      preview: 'أحمد: أرسلت النسخة الجديدة',
+      time: 'أمس',
+      initials: 'ف',
+      unread: 5,
+    ),
+    ChatPreview(
+      name: 'محمد خالد',
+      preview: 'شكرًا لك!',
+      time: 'الأحد',
+      initials: 'م',
+    ),
+  ];
+  String _query = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final visibleChats = _chats
+        .where((chat) => chat.name.contains(_query.trim()))
+        .toList();
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'وصلة',
+            style: TextStyle(fontWeight: FontWeight.w800, letterSpacing: 0),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              tooltip: 'الإعدادات',
+              icon: const Icon(Icons.settings_outlined),
+            ),
+            IconButton(
+              onPressed: () {},
+              tooltip: 'محادثة جديدة',
+              icon: const Icon(Icons.edit_square),
+            ),
+          ],
+        ),
+        body: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+          children: [
+            Text(
+              'محادثاتك',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFF17212B),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _searchController,
+              onChanged: (value) => setState(() => _query = value),
+              decoration: const InputDecoration(
+                hintText: 'ابحث في محادثاتك',
+                prefixIcon: Icon(Icons.search),
+                contentPadding: EdgeInsets.symmetric(vertical: 14),
+              ),
+            ),
+            const SizedBox(height: 20),
+            if (visibleChats.isEmpty)
+              const Padding(
+                padding: EdgeInsets.only(top: 64),
+                child: Center(child: Text('لا توجد محادثات مطابقة')),
+              )
+            else
+              ...visibleChats.map(
+                (chat) => ChatTile(
+                  chat: chat,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => ChatPage(chat: chat),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: 0,
+          onDestinationSelected: (_) {},
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.chat_bubble_outline),
+              selectedIcon: Icon(Icons.chat_bubble),
+              label: 'المحادثات',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.people_outline),
+              selectedIcon: Icon(Icons.people),
+              label: 'جهات الاتصال',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
+              label: 'حسابي',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ChatTile extends StatelessWidget {
+  const ChatTile({required this.chat, required this.onTap, super.key});
+
+  final ChatPreview chat;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(vertical: 7),
+      onTap: onTap,
+      leading: CircleAvatar(
+        radius: 27,
+        backgroundColor: const Color(0xFFD9F4EC),
+        child: Text(
+          chat.initials,
+          style: const TextStyle(
+            color: Color(0xFF007D65),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      title: Text(
+        chat.name,
+        style: const TextStyle(fontWeight: FontWeight.w700),
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: Text(chat.preview, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ),
+      trailing: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            chat.time,
+            style: TextStyle(
+              color: chat.unread > 0 ? const Color(0xFF008F76) : Colors.black45,
+              fontSize: 12,
+            ),
+          ),
+          if (chat.unread > 0) ...[
+            const SizedBox(height: 7),
+            CircleAvatar(
+              radius: 10,
+              backgroundColor: const Color(0xFF00A884),
+              child: Text(
+                '${chat.unread}',
+                style: const TextStyle(color: Colors.white, fontSize: 11),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class ChatPage extends StatefulWidget {
+  const ChatPage({required this.chat, super.key});
+
+  final ChatPreview chat;
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final _messageController = TextEditingController();
+  final _messages = <String>[
+    'مرحبًا! كيف حالك؟',
+    'بخير، أتمنى أن تكون بخير أيضًا',
+    'تمام، نلتقي بعد قليل',
+  ];
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _sendMessage() {
+    final message = _messageController.text.trim();
+    if (message.isEmpty) return;
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _messages.add(message);
+      _messageController.clear();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          titleSpacing: 0,
+          title: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: const Color(0xFFD9F4EC),
+                child: Text(widget.chat.initials),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.chat.name, style: const TextStyle(fontSize: 16)),
+                  Text(
+                    widget.chat.isOnline ? 'متصل الآن' : 'آخر ظهور مؤخرًا',
+                    style: const TextStyle(fontSize: 11, color: Colors.black54),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              tooltip: 'مكالمة صوتية',
+              icon: const Icon(Icons.call_outlined),
+            ),
+            IconButton(
+              onPressed: () {},
+              tooltip: 'المزيد',
+              icon: const Icon(Icons.more_vert),
+            ),
+          ],
+        ),
+        body: Column(
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+                itemCount: _messages.length,
+                itemBuilder: (context, index) => MessageBubble(
+                  message: _messages[index],
+                  isMine: index.isOdd,
+                ),
+              ),
+            ),
+            SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      tooltip: 'إضافة مرفق',
+                      icon: const Icon(Icons.add_circle_outline),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: _messageController,
+                        textInputAction: TextInputAction.send,
+                        onSubmitted: (_) => _sendMessage(),
+                        decoration: const InputDecoration(
+                          hintText: 'اكتب رسالة...',
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton.filled(
+                      onPressed: _sendMessage,
+                      tooltip: 'إرسال',
+                      icon: const Icon(Icons.arrow_upward),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  const MessageBubble({required this.message, required this.isMine, super.key});
+
+  final String message;
+  final bool isMine;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isMine ? Alignment.centerLeft : Alignment.centerRight,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 300),
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 11),
+        decoration: BoxDecoration(
+          color: isMine ? const Color(0xFF00A884) : Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(18),
+            topRight: const Radius.circular(18),
+            bottomLeft: Radius.circular(isMine ? 18 : 4),
+            bottomRight: Radius.circular(isMine ? 4 : 18),
+          ),
+        ),
+        child: Text(
+          message,
+          style: TextStyle(
+            color: isMine ? Colors.white : const Color(0xFF17212B),
+          ),
+        ),
       ),
     );
   }
