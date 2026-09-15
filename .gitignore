@@ -1,12 +1,15 @@
 # Gradle files
 .gradle/
 build/
+.dart_tool/
+.flutter-plugins-dependencies
 
 # Local configuration file (sdk path, etc)
 local.properties
 
 # Log/OS Files
 *.log
+.env
 
 # Android Studio generated files and folders
 captures/

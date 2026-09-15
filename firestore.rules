@@ -1,0 +1,54 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    match /mailbox/{recipientUid}/messages/{messageId} {
+      allow create: if signedIn()
+        && request.resource.data.senderUid == request.auth.uid
+        && request.resource.data.recipientUid == recipientUid
+        && request.resource.data.keys().hasOnly([
+          'senderUid',
+          'recipientUid',
+          'conversationId',
+          'type',
+          'payload',
+          'createdAt'
+        ]);
+      allow read, delete: if isSelf(recipientUid);
+      allow update: if false;
+    }
+
+    match /mailbox/{senderUid}/receipts/{messageId} {
+      allow create: if signedIn()
+        && request.resource.data.recipientUid == request.auth.uid
+        && request.resource.data.messageId == messageId;
+      allow read: if isSelf(senderUid);
+      allow update, delete: if false;
+    }
+
+    match /users/{uid} {
+      allow create, update: if isSelf(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.keys().hasOnly([
+          'uid',
+          'phoneHash',
+          'displayName',
+          'updatedAt'
+        ]);
+      allow get, list: if signedIn();
+      allow delete: if isSelf(uid);
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

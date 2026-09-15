@@ -1,0 +1,57 @@
+{
+  "@@locale": "ar",
+  "appName": "نبض شات",
+  "chats": "المحادثات",
+  "contacts": "جهات الاتصال",
+  "settings": "الإعدادات",
+  "yourChats": "محادثاتك",
+  "searchChats": "ابحث في محادثاتك",
+  "noMatchingChats": "لا توجد محادثات مطابقة",
+  "newChat": "محادثة جديدة",
+  "settingsTooltip": "الإعدادات",
+  "callTooltip": "مكالمة صوتية",
+  "moreTooltip": "المزيد",
+  "onlineNow": "متصل الآن",
+  "lastSeenRecently": "آخر ظهور مؤخرًا",
+  "addAttachment": "إضافة مرفق",
+  "messageHint": "اكتب رسالة...",
+  "send": "إرسال",
+  "accountPlaceholder": "إعدادات الحساب ستتوفر قريبًا.",
+  "contactsPlaceholder": "ستظهر جهات اتصالك المحلية هنا.",
+  "sampleGreeting": "مرحبًا! كيف حالك؟",
+  "sampleReply": "بخير، أتمنى أن تكون بخير أيضًا",
+  "sampleClosing": "تمام، نلتقي بعد قليل"
+  ,"welcomeTitle": "مرحبًا بك في نبض شات"
+  ,"welcomeSubtitle": "في الوضع المحلي تبقى محادثاتك محفوظة على هذا الجهاز."
+  ,"phoneNumber": "رقم الهاتف"
+  ,"phoneNumberHint": "+966 50 000 0000"
+  ,"continueAction": "متابعة"
+  ,"profileSetupTitle": "إعداد ملفك الشخصي"
+  ,"profileSetupSubtitle": "اختر كيف سيظهر اسمك داخل التطبيق."
+  ,"realName": "اسمك الحقيقي"
+  ,"displayName": "الاسم الظاهر"
+  ,"about": "نبذة (اختياري)"
+  ,"saveProfile": "حفظ الملف الشخصي"
+  ,"requiredField": "هذا الحقل مطلوب"
+  ,"invalidPhone": "أدخل رقم هاتف صحيحًا"
+  ,"logout": "تسجيل الخروج"
+  ,"logoutConfirm": "هل تريد تسجيل الخروج من هذا الحساب المحلي؟ ستبقى محادثاتك على الجهاز."
+  ,"cancel": "إلغاء"
+  ,"loggedOut": "تم تسجيل الخروج"
+  ,"importContacts": "استيراد جهات الاتصال"
+  ,"searchContacts": "البحث في جهات الاتصال"
+  ,"contactsEmpty": "لا توجد جهات اتصال محلية بعد. استوردها من هاتفك."
+  ,"contactsPermissionDenied": "تم رفض إذن جهات الاتصال. يمكنك السماح به من إعدادات النظام."
+  ,"contactsImportFailed": "تعذر استيراد جهات الاتصال. حاول مرة أخرى."
+  ,"onNabd": "على نبض"
+  ,"inviteSection": "دعوة إلى نبض"
+  ,"retry": "إعادة المحاولة"
+  ,"dismiss": "إغلاق"
+  ,"otpTitle": "تأكيد رقم الهاتف"
+  ,"otpSubtitle": "أدخل الرمز المرسل إلى"
+  ,"otpCode": "رمز التحقق"
+  ,"verifyCode": "تأكيد الرقم"
+  ,"otpFailed": "تعذر إرسال رمز التحقق. حاول مرة أخرى."
+  ,"otpInvalid": "أدخل رمز التحقق المكوّن من 6 أرقام."
+  ,"noMessagesYet": "لا توجد رسائل بعد. ابدأ المحادثة."
+}

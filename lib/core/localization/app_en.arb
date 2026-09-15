@@ -1,0 +1,57 @@
+{
+  "@@locale": "en",
+  "appName": "Nabd Chat",
+  "chats": "Chats",
+  "contacts": "Contacts",
+  "settings": "Settings",
+  "yourChats": "Your chats",
+  "searchChats": "Search your chats",
+  "noMatchingChats": "No matching chats",
+  "newChat": "New chat",
+  "settingsTooltip": "Settings",
+  "callTooltip": "Voice call",
+  "moreTooltip": "More",
+  "onlineNow": "Online now",
+  "lastSeenRecently": "Last seen recently",
+  "addAttachment": "Add attachment",
+  "messageHint": "Write a message...",
+  "send": "Send",
+  "accountPlaceholder": "Account settings are coming next.",
+  "contactsPlaceholder": "Your local contacts will appear here.",
+  "sampleGreeting": "Hello! How are you?",
+  "sampleReply": "I am well, hope you are too",
+  "sampleClosing": "Great, see you soon"
+  ,"welcomeTitle": "Welcome to Nabd Chat"
+  ,"welcomeSubtitle": "Your conversations stay on this device in local mode."
+  ,"phoneNumber": "Phone number"
+  ,"phoneNumberHint": "+1 555 000 0000"
+  ,"continueAction": "Continue"
+  ,"profileSetupTitle": "Set up your profile"
+  ,"profileSetupSubtitle": "Choose how people will see you in this app."
+  ,"realName": "Your name"
+  ,"displayName": "Display name"
+  ,"about": "About (optional)"
+  ,"saveProfile": "Save profile"
+  ,"requiredField": "This field is required"
+  ,"invalidPhone": "Enter a valid phone number"
+  ,"logout": "Log out"
+  ,"logoutConfirm": "Log out of this local account? Your local history will stay on this device."
+  ,"cancel": "Cancel"
+  ,"loggedOut": "You are logged out"
+  ,"importContacts": "Import contacts"
+  ,"searchContacts": "Search contacts"
+  ,"contactsEmpty": "No local contacts yet. Import them from your phone."
+  ,"contactsPermissionDenied": "Contacts permission was denied. You can allow it in system settings."
+  ,"contactsImportFailed": "Contacts could not be imported. Try again."
+  ,"onNabd": "On Nabd"
+  ,"inviteSection": "Invite to Nabd"
+  ,"retry": "Retry"
+  ,"dismiss": "Dismiss"
+  ,"otpTitle": "Verify your phone"
+  ,"otpSubtitle": "Enter the code sent to"
+  ,"otpCode": "Verification code"
+  ,"verifyCode": "Verify phone"
+  ,"otpFailed": "We could not send the verification code. Try again."
+  ,"otpInvalid": "Enter the 6-digit verification code."
+  ,"noMessagesYet": "No messages yet. Start the conversation."
+}
